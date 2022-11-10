@@ -22,7 +22,7 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
-    @GetMapping("/listar/id/{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Integer id) {
         Optional<Pessoa> pessoaOptional = pessoaService.findById(id);
 
@@ -40,10 +40,6 @@ public class PessoaController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Object> save(@RequestBody @Valid PessoaDto pessoaDto) {
-        if (pessoaService.existById(pessoaDto.getId())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("ID já cadastrado");
-        }
-
         if (pessoaService.existByCpf(pessoaDto.getCpf())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("CPF já cadastrado");
         }

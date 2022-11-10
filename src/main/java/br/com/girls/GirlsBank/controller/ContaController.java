@@ -22,7 +22,7 @@ public class ContaController {
         this.contaService = contaService;
     }
 
-    @GetMapping("/listar/numero/{numero}")
+    @GetMapping("/listar/{numero}")
     public ResponseEntity<Object> findById(@PathVariable(value = "numero") Integer numero) {
         Optional<Conta> pessoaOptional = contaService.findById(numero);
 
@@ -40,10 +40,6 @@ public class ContaController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Object> save(@RequestBody @Valid ContaDto contaDto) {
-        if (contaService.existById(contaDto.getNumero())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("número já cadastrado");
-        }
-
         Conta conta = new Conta();
         BeanUtils.copyProperties(contaDto, conta);
 

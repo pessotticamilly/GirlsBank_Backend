@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, unique = true)
+    @Column
     private Integer id;
 
     @Column(nullable = false)
