@@ -24,5 +24,4 @@ public class Conta {
     @ManyToOne
     @JoinColumn(name = "idPessoa")
     private Pessoa pessoa;
-
 }

@@ -19,6 +19,10 @@ public class PessoaService {
         return pessoaRepository.existsById(id);
     }
 
+    public boolean existByCpf(Long cpf) {
+        return pessoaRepository.existsByCpf(cpf);
+    }
+
     public Optional<Pessoa> findById(Integer id) {
         return pessoaRepository.findById(id);
     }
@@ -27,8 +31,8 @@ public class PessoaService {
         return pessoaRepository.findAll();
     }
 
-    public Pessoa save(Pessoa livro) {
-        return pessoaRepository.save(livro);
+    public Pessoa save(Pessoa pessoa) {
+        return pessoaRepository.save(pessoa);
     }
 
     public void deleteById(Integer id) {
