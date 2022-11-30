@@ -23,8 +23,16 @@ public class PessoaService {
         return pessoaRepository.existsByCpf(cpf);
     }
 
+    public boolean existsBySenha(String senha) {
+        return pessoaRepository.existsBySenha(senha);
+    }
+
     public Optional<Pessoa> findById(Integer id) {
         return pessoaRepository.findById(id);
+    }
+
+    public Optional<Pessoa> findByCpf(Long cpf) {
+        return pessoaRepository.findByCpf(cpf);
     }
 
     public List<Pessoa> findAll(){

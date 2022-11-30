@@ -1,6 +1,7 @@
 package br.com.girls.GirlsBank.controller;
 
 import br.com.girls.GirlsBank.dto.PessoaDto;
+import br.com.girls.GirlsBank.dto.PessoaDtoLogin;
 import br.com.girls.GirlsBank.model.entities.Pessoa;
 import br.com.girls.GirlsBank.model.service.PessoaService;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/girlsbank/pessoa")
 public class PessoaController {
@@ -49,6 +51,14 @@ public class PessoaController {
 
         pessoaService.save(pessoa);
         return ResponseEntity.status(HttpStatus.OK).body("Pessoa cadastrada com sucesso");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid PessoaDtoLogin pessoaDtoLogin) {
+        if (pessoaService.existByCpf(pessoaDtoLogin.getCpf()) && pessoaService.existsBySenha(pessoaDtoLogin.getSenha())) {
+            return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findByCpf(pessoaDtoLogin.getCpf()));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não existe nenhuma pessoa com este CPF ou senha!");
     }
 
     @PutMapping("/editar/{id}")
