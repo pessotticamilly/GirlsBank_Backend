@@ -2,8 +2,11 @@ package br.com.girls.GirlsBank.controller;
 
 import br.com.girls.GirlsBank.dto.PessoaDto;
 import br.com.girls.GirlsBank.dto.PessoaDtoLogin;
+import br.com.girls.GirlsBank.model.entities.Conta;
 import br.com.girls.GirlsBank.model.entities.Pessoa;
+import br.com.girls.GirlsBank.model.service.ContaService;
 import br.com.girls.GirlsBank.model.service.PessoaService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
+@AllArgsConstructor
 @Controller
 @RequestMapping("/girlsbank/pessoa")
 public class PessoaController {
     private final PessoaService pessoaService;
 
-    public PessoaController(PessoaService pessoaService) {
-        this.pessoaService = pessoaService;
-    }
+    private final ContaService contaService;
 
     @GetMapping("/listar/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Integer id) {
@@ -50,6 +52,13 @@ public class PessoaController {
         BeanUtils.copyProperties(pessoaDto, pessoa);
 
         pessoaService.save(pessoa);
+
+        Conta conta = new Conta();
+        conta.setSaldo(0.0);
+        conta.setPessoa(pessoa);
+
+        contaService.save(conta);
+
         return ResponseEntity.status(HttpStatus.OK).body("Pessoa cadastrada com sucesso");
     }
 

@@ -2,6 +2,7 @@ package br.com.girls.GirlsBank.controller;
 
 import br.com.girls.GirlsBank.dto.ContaDto;
 import br.com.girls.GirlsBank.model.entities.Conta;
+import br.com.girls.GirlsBank.model.entities.Pessoa;
 import br.com.girls.GirlsBank.model.service.ContaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/girlsbank/conta")
 public class ContaController {
@@ -36,6 +38,14 @@ public class ContaController {
     @GetMapping("/listar")
     public ResponseEntity<List<Conta>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(contaService.findAll());
+    }
+
+    @GetMapping("/pessoa/{pessoa}")
+    public ResponseEntity<Object> findByPessoa(@PathVariable(name = "pessoa") Pessoa pessoa) {
+        if (contaService.findByPessoa(pessoa) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pessoa");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(contaService.findByPessoa(pessoa));
     }
 
     @PostMapping("/cadastrar")

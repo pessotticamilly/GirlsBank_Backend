@@ -1,6 +1,7 @@
 package br.com.girls.GirlsBank.model.service;
 
 import br.com.girls.GirlsBank.model.entities.Conta;
+import br.com.girls.GirlsBank.model.entities.Pessoa;
 import br.com.girls.GirlsBank.repository.ContaRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class ContaService {
 
     public Optional<Conta> findById(Integer numero) {
         return contaRepository.findById(numero);
+    }
+
+    public Optional<Conta> findByPessoa(Pessoa pessoa) {
+        return contaRepository.findByPessoa(pessoa);
     }
 
     public List<Conta> findAll(){
