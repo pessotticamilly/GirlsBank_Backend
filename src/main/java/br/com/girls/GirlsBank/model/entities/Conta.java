@@ -21,7 +21,7 @@ public class Conta {
     @Column(nullable = false)
     private Double saldo;
 
-    @ManyToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "idPessoa")
     private Pessoa pessoa;
 }

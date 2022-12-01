@@ -3,8 +3,11 @@ package br.com.girls.GirlsBank.controller;
 import br.com.girls.GirlsBank.dto.ContaDto;
 import br.com.girls.GirlsBank.model.entities.Conta;
 import br.com.girls.GirlsBank.model.entities.Pessoa;
+import br.com.girls.GirlsBank.model.service.PessoaService;
 import br.com.girls.GirlsBank.model.service.ContaService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,11 +21,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/girlsbank/conta")
 public class ContaController {
-    private final ContaService contaService;
 
-    public ContaController(ContaService contaService) {
-        this.contaService = contaService;
-    }
+    @Autowired
+    ContaService contaService;
+
+    @Autowired
+    PessoaService pessoaService;
+
 
     @GetMapping("/listar/{numero}")
     public ResponseEntity<Object> findById(@PathVariable(value = "numero") Integer numero) {
@@ -40,8 +45,15 @@ public class ContaController {
         return ResponseEntity.status(HttpStatus.OK).body(contaService.findAll());
     }
 
-    @GetMapping("/pessoa/{pessoa}")
-    public ResponseEntity<Object> findByPessoa(@PathVariable(name = "pessoa") Pessoa pessoa) {
+    @GetMapping("/pessoa/{pessoaId}")
+    public ResponseEntity<Object> findByPessoa(@PathVariable(value = "pessoaId") Integer pessoaId) {
+        Optional<Pessoa> optionalPessoa = pessoaService.findById(pessoaId);
+
+        Pessoa pessoa = new Pessoa();
+
+        BeanUtils.copyProperties(optionalPessoa.get(), pessoa);
+
+
         if (contaService.findByPessoa(pessoa) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pessoa");
         }
@@ -59,11 +71,15 @@ public class ContaController {
 
     @PutMapping("/editar/{numero}")
     public ResponseEntity<Object> update(@PathVariable(value = "numero") Integer numero, @Valid @RequestBody ContaDto contaDto) {
+
+
         if (!contaService.existById(numero)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma conta com o número informado");
         }
 
-        Conta conta = contaService.findById(contaDto.getNumero()).get();
+
+        Conta conta = new Conta();
+
         BeanUtils.copyProperties(contaDto, conta);
 
         contaService.save(conta);
