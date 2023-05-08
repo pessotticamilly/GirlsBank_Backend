@@ -53,10 +53,10 @@ public class ContaController {
 
         BeanUtils.copyProperties(optionalPessoa.get(), pessoa);
 
-
         if (contaService.findByPessoa(pessoa) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pessoa");
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(contaService.findByPessoa(pessoa));
     }
 
@@ -75,9 +75,7 @@ public class ContaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma conta com o número informado");
         }
 
-
         Conta conta = new Conta();
-
         BeanUtils.copyProperties(contaDto, conta);
 
         contaService.save(conta);

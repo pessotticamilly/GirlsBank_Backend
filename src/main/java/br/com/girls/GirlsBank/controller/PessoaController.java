@@ -88,10 +88,7 @@ public class PessoaController {
         if (!pessoaService.existById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pessoa com o ID informado");
         }
-        Conta conta = contaService.findByPessoa(pessoaService.findById(id).get()).get();
-        System.out.println("-------- AQUI A CONTA Ó > " + conta.toString());
-        contaService.deleteById(conta.getNumero());
-        System.out.println("-------- EXCLUIU? > " + conta.toString());
+        
         pessoaService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Pessoa deletada com sucesso");
     }
