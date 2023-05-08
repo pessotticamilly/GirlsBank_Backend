@@ -14,8 +14,8 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Conta {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Integer numero;
 
     @Column(nullable = false)

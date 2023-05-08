@@ -14,22 +14,22 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Pessoa {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 
     @Column(nullable = false)
     private String nomeCompleto;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long cpf;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long telefone;
 }

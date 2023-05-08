@@ -71,8 +71,6 @@ public class ContaController {
 
     @PutMapping("/editar/{numero}")
     public ResponseEntity<Object> update(@PathVariable(value = "numero") Integer numero, @Valid @RequestBody ContaDto contaDto) {
-
-
         if (!contaService.existById(numero)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma conta com o número informado");
         }

@@ -42,6 +42,14 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findAll());
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid PessoaDtoLogin pessoaDtoLogin) {
+        if (pessoaService.existByCpf(pessoaDtoLogin.getCpf()) && pessoaService.existsBySenha(pessoaDtoLogin.getSenha())) {
+            return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findByCpf(pessoaDtoLogin.getCpf()));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não existe nenhuma pessoa com este CPF ou senha!");
+    }
+
     @PostMapping("/cadastrar")
     public ResponseEntity<Object> save(@RequestBody @Valid PessoaDto pessoaDto) {
         if (pessoaService.existByCpf(pessoaDto.getCpf())) {
@@ -62,14 +70,6 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.OK).body("Pessoa cadastrada com sucesso");
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid PessoaDtoLogin pessoaDtoLogin) {
-        if (pessoaService.existByCpf(pessoaDtoLogin.getCpf()) && pessoaService.existsBySenha(pessoaDtoLogin.getSenha())) {
-            return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findByCpf(pessoaDtoLogin.getCpf()));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não existe nenhuma pessoa com este CPF ou senha!");
-    }
-
     @PutMapping("/editar/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Integer id, @Valid @RequestBody PessoaDto pessoaDto) {
         if (!pessoaService.existById(id)) {
@@ -88,7 +88,10 @@ public class PessoaController {
         if (!pessoaService.existById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pessoa com o ID informado");
         }
-
+        Conta conta = contaService.findByPessoa(pessoaService.findById(id).get()).get();
+        System.out.println("-------- AQUI A CONTA Ó > " + conta.toString());
+        contaService.deleteById(conta.getNumero());
+        System.out.println("-------- EXCLUIU? > " + conta.toString());
         pessoaService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Pessoa deletada com sucesso");
     }
